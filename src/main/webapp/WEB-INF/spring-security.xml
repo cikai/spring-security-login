@@ -5,12 +5,19 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
+	<beans:bean id="loginSuccessHandler" class="cn.jsutils.controller.LoginSuccessHandler">
+		<beans:property name="defaultTargetUrl" value="/spring-security-login/admin"></beans:property>
+	</beans:bean>
+
 	<http auto-config="true">
 		<intercept-url pattern="/admin" access="ROLE_USER" />
+		<intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		
+		<!-- default-target-url="/admin"  -->
 		<form-login 
+			always-use-default-target="false" 
+			authentication-success-handler-ref="loginSuccessHandler" 
 			login-page="/login" 
-			default-target-url="/admin" 
 			authentication-failure-url="/login?error" 
 			username-parameter="username"
 			password-parameter="password" />
